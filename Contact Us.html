@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>e-commerce website</title>
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
+<link rel="stylesheet" type="text/css" href="ec.css">
+
+<style>
+/* ✅ Existing Layout Additions */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* ✅ Feedback Section Styling */
+#feedback {
+    background-color: #f9f9f9;
+    text-align: center;
+    padding: 40px;
+    border-top: 1px solid #ddd;
+}
+#feedback h2 {
+    color: #222;
+    margin-bottom: 10px;
+}
+#feedback p {
+    color: #555;
+    margin-bottom: 20px;
+}
+#feedback-form input, 
+#feedback-form textarea {
+    width: 60%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+#feedback-form .normal {
+    background-color: #088178;
+    color: #fff;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#feedback-form .normal:hover {
+    background-color: #066e65;
+}
+</style>
+</head>
+
+<body>
+	<section id="header">
+		<a href="#"><img src="img/es.jfif" class="logo" alt=""></a>
+	<div>
+		<ul id="navbar">
+		    <li><a href="inde.html">Home</a></li>
+	        <li><a href="Shop.html">Shop</a></li>
+		    <li><a href="Blog.html">Blog</a></li>
+		    <li><a href="about.html">About</a></li>
+		    <li><a class="active" href="Contact Us.html">Contact Us</a></li>
+		    <li><a href="#" onclick="addToCart('Cartoon Astronaut T-Shirt', 78, 'img/ct.jpg', true)">
+  <i class="fal fa-shopping-cart cart"></i>
+</a>
+		</ul>
+	</div>
+	</section>
+
+	<section id="page-header" class="About-header">
+		<h2>#let's_talk</h2>
+		<p>Leave A Message. We love to hear from you!</p>
+	</section>
+
+	<section id="contact-details" class="section-p1">
+		<div class="details">
+					
+			</div>
+				<div class="map">
+			<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3488.6546524441687!2d77.05953287418188!3d29.02721227545158!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390db10377463789%3A0xf697cc2d804b8b8e!2sDeenbandhu%20Chhotu%20Ram%20University%20Of%20Science%20And%20Technology%2C%20Murthal%20(Haryana)!5e0!3m2!1sen!2sin!4v1746480923628!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+		</div>
+	</section>
+
+	<!-- ✅ Feedback Section -->
+	<section id="feedback" class="section-p1 section-m1">
+		<div class="feedback-container">
+			<h2>We Value Your Feedback</h2>
+			<p>Please share your thoughts and suggestions to help us improve!</p>
+			<form id="feedback-form" action="#" method="post">
+				<label for="name">Name:</label><br>
+				<input type="text" id="name" name="name" placeholder="Enter your name" required><br><br>
+
+				<label for="email">Email:</label><br>
+				<input type="email" id="email" name="email" placeholder="Enter your email" required><br><br>
+
+				<label for="message">Your Feedback:</label><br>
+				<textarea id="message" name="message" rows="5" placeholder="Write your feedback here..." required></textarea><br><br>
+
+				<button type="submit" class="normal">Submit Feedback</button>
+			</form>
+		</div>
+	</section>
+	<!-- ✅ Feedback Section Ends -->
+
+	<section id="newsletter" class="section-p1 section-m1">
+		<div class="newstext">
+			<h4>Sign Up For Newsletters</h4>
+			<p>Get E-mail updates about our latest shop and <span>special offers.</span></p>
+		</div>
+		<div class="form">
+			<input type="text" placeholder="your email address">
+			<button class="normal">Sign Up</button>
+		</div>
+	</section>
+
+	<footer class="section-p1">
+		<div class="col">
+			<h4>Contact</h4>
+			<p><strong>Address:</strong>234 SubashChowk near Railway Road, Street 32</p>
+			<p><strong>Phone:</strong>+914565778546/ (+91) 3467832120</p>
+			<p><strong>Hours:</strong>9:00A.M -8:00P.M, Mon - Sat</p>
+			<div class="follow">
+				<h4>Follow Us</h4>
+				<div class="icon">
+		           <i class="fab fa-facebook-f"></i> 
+				   <i class="fab fa-twitter"></i> 
+				   <i class="fab fa-instagram"></i> 
+				   <i class="fab fa-pinterest-p"></i> 
+				   <i class="fab fa-youtube"></i> 
+				</div>
+			</div>
+		</div>
+
+		<div class="col">
+			<h4>About Us</h4>
+			<a href="#">About Us</a>
+			<a href="#">Delivery Information</a>
+			<a href="#">privacy policy</a>
+			<a href="#">Terms & Condition</a>
+			<a href="#">Contact Us</a>
+		</div>
+
+		<div class="col">
+			<h4>My Account</h4>
+			<a href="#">Sign In</a>
+			<a href="#">View Cart</a>
+			<a href="#">My Wishlist</a>
+			<a href="#">Track My Order</a>
+			<a href="#">Help</a>
+		</div>
+
+		<div class="col install">
+			<h4>Install App</h4>
+			<p>From App Store or Google Play</p>
+			<div class="row">
+				<img src="img/apple.jpg" alt="">
+				<img src="img/paid.png" alt="">
+			</div>
+		
+			<div class="copyright">
+				<p>2025 E-Creative Wear</p>
+			</div>
+		</div>
+	</footer>
+
+<!-- ✅ JavaScript -->
+<script src="scri.js"></script>
+
+<script>
+// Feedback form submission handler
+document.getElementById("feedback-form").addEventListener("submit", function(e){
+	e.preventDefault();
+
+	let name = document.getElementById("name").value.trim();
+	let email = document.getElementById("email").value.trim();
+	let message = document.getElementById("message").value.trim();
+
+	if(name && email && message){
+		// Save in localStorage
+		let feedbackData = JSON.parse(localStorage.getItem("feedbacks")) || [];
+		feedbackData.push({name, email, message, date: new Date().toLocaleString()});
+		localStorage.setItem("feedbacks", JSON.stringify(feedbackData));
+
+		alert("Thank you for your feedback, " + name + "!");
+		document.getElementById("feedback-form").reset();
+	} else {
+		alert("Please fill out all fields before submitting.");
+	}
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FashionStore | Login / Register</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; font-family: 'Poppins', sans-serif; margin: 0; padding: 0; }
+    body {
+      height: 100vh;
+      background: url('home-bg.jpg') no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      width: 400px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      overflow: hidden;
+      padding: 40px 30px;
+      text-align: center;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(-20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      border-color: #ff4081;
+      box-shadow: 0 0 5px rgba(255,64,129,0.5);
+    }
+
+    .password-wrapper {
+      position: relative;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #888;
+      font-size: 14px;
+      user-select: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #ff4081;
+      color: #fff;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #e0356c;
+    }
+
+    .toggle-text {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .toggle-text a {
+      color: #ff4081;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .toggle-text a:hover { text-decoration: underline; }
+
+    .hidden { display: none; }
+
+    .success-message {
+      background: #e8f5e9;
+      color: #2e7d32;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    .error {
+      color: #d32f2f;
+      font-size: 14px;
+      margin-bottom: 5px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2 id="form-title">
+      <a href="#"><img src="img/es.jfif" class="sb" alt="Logo"></a>
+    </h2>
+
+    <div id="success" class="success-message"></div>
+
+    <!-- Login Form -->
+    <form id="login-form">
+      <input list="saved-emails" type="email" id="login-email" placeholder="Email" required>
+      <datalist id="saved-emails"></datalist>
+
+      <div class="password-wrapper">
+        <input type="password" id="login-password" placeholder="Password" required>
+        <span class="toggle-password" onclick="togglePassword('login-password', this)">👁️</span>
+      </div>
+
+      <div id="login-error" class="error">Invalid email or password!</div>
+      <button type="submit">Login</button>
+      <p class="toggle-text">Don't have an account? <a href="#" id="show-register">Register here</a></p>
+    </form>
+
+    <!-- Register Form -->
+    <form id="register-form" class="hidden">
+      <input type="text" id="reg-name" placeholder="Full Name" required>
+      <input type="email" id="reg-email" placeholder="Email" required>
+
+      <div class="password-wrapper">
+        <input type="password" id="reg-password" placeholder="Password" required>
+        <span class="toggle-password" onclick="togglePassword('reg-password', this)">👁️</span>
+      </div>
+
+      <div class="password-wrapper">
+        <input type="password" id="reg-confirm" placeholder="Confirm Password" required>
+        <span class="toggle-password" onclick="togglePassword('reg-confirm', this)">👁️</span>
+      </div>
+
+      <div id="reg-error" class="error">Passwords do not match!</div>
+      <button type="submit">Register</button>
+      <p class="toggle-text">Already have an account? <a href="#" id="show-login">Login here</a></p>
+    </form>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const showRegister = document.getElementById('show-register');
+    const showLogin = document.getElementById('show-login');
+    const formTitle = document.getElementById('form-title');
+    const successMsg = document.getElementById('success');
+    const emailInput = document.getElementById('login-email');
+    const datalist = document.getElementById('saved-emails');
+
+    // 👁️ Show/Hide Password
+    function togglePassword(id, el) {
+      const field = document.getElementById(id);
+      if (field.type === "password") {
+        field.type = "text";
+        el.textContent = "🙈";
+      } else {
+        field.type = "password";
+        el.textContent = "👁️";
+      }
+    }
+
+    // Load saved emails
+    function loadSavedEmails() {
+      datalist.innerHTML = '';
+      const savedUsers = JSON.parse(localStorage.getItem('fashionstore_users')) || [];
+      savedUsers.forEach(user => {
+        const option = document.createElement('option');
+        option.value = user.email;
+        datalist.appendChild(option);
+      });
+    }
+
+    loadSavedEmails();
+
+    // Switch forms
+    showRegister.addEventListener('click', (e) => {
+      e.preventDefault();
+      loginForm.classList.add('hidden');
+      registerForm.classList.remove('hidden');
+      formTitle.textContent = "Create Your Account";
+      successMsg.style.display = 'none';
+    });
+
+    showLogin.addEventListener('click', (e) => {
+      e.preventDefault();
+      registerForm.classList.add('hidden');
+      loginForm.classList.remove('hidden');
+      formTitle.textContent = "Login to FashionStore";
+      successMsg.style.display = 'none';
+      loadSavedEmails();
+    });
+
+    // Register
+    registerForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('reg-name').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const pass = document.getElementById('reg-password').value;
+      const confirm = document.getElementById('reg-confirm').value;
+      const error = document.getElementById('reg-error');
+
+      if (pass !== confirm) {
+        error.style.display = 'block';
+        return;
+      }
+      error.style.display = 'none';
+
+      // Save multiple users
+      const savedUsers = JSON.parse(localStorage.getItem('fashionstore_users')) || [];
+      savedUsers.push({ name, email, pass, discount: 10 });
+      localStorage.setItem('fashionstore_users', JSON.stringify(savedUsers));
+
+      successMsg.textContent = "Registration successful! You can now login.";
+      successMsg.style.display = 'block';
+      registerForm.reset();
+      setTimeout(() => showLogin.click(), 1500);
+    });
+
+    // Login
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = emailInput.value.trim();
+      const pass = document.getElementById('login-password').value;
+      const error = document.getElementById('login-error');
+      const savedUsers = JSON.parse(localStorage.getItem('fashionstore_users')) || [];
+
+      const matchedUser = savedUsers.find(u => u.email === email && u.pass === pass);
+
+      if (matchedUser) {
+        error.style.display = 'none';
+        successMsg.textContent = "Login successful! You got 10% off on your first order!";
+        successMsg.style.display = 'block';
+        localStorage.setItem('discount_applied', matchedUser.discount);
+
+        setTimeout(() => {
+          window.location.href = "inde.html"; // Redirect
+        }, 1500);
+      } else {
+        error.style.display = 'block';
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel | Store Dashboard</title>
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
+<style>
+*{box-sizing:border-box;}
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  background: #f4f6f8;
+  display: flex;
+  height: 100vh;
+}
+
+/* ✅ Left Sidebar */
+.sidebar {
+  background: #111;
+  color: white;
+  width: 260px;
+  padding: 25px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+.sidebar h2 {
+  margin-top: 0;
+  color: #0df0c8;
+  text-align: center;
+}
+.sidebar input {
+  width: 100%;
+  padding: 8px;
+  margin: 6px 0;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+}
+.sidebar button {
+  width: 100%;
+  margin-top: 8px;
+  background: #088178;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.sidebar button:hover {
+  background: #066e65;
+}
+.sidebar .login-error {
+  color: #ff4d4d;
+  font-size: 13px;
+  margin-top: 6px;
+}
+.sidebar .quick-buttons {
+  margin-top: 20px;
+  width: 100%;
+}
+.sidebar .quick-buttons button {
+  background: transparent;
+  border: 1px solid #0df0c8;
+  color: white;
+  margin: 6px 0;
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.sidebar .quick-buttons button.active {
+  background: #0df0c8;
+  color: #111;
+  font-weight: bold;
+}
+.sidebar .quick-buttons button:hover {
+  background: #0df0c8;
+  color: #111;
+}
+.sidebar .logout {
+  margin-top: auto;
+  background: #ff5c5c;
+}
+.sidebar .logout:hover {
+  background: #e14a4a;
+}
+
+/* ✅ Right Content Area */
+.main-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+header {
+  background: #111;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  font-size: 22px;
+  border-radius: 8px;
+}
+.container {
+  padding: 20px 0;
+}
+.card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.card h2 {
+  margin-top: 0;
+  border-bottom: 2px solid #088178;
+  padding-bottom: 8px;
+  color: #333;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+table th, table td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+th {
+  background: #088178;
+  color: white;
+}
+img {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+.empty {
+  text-align: center;
+  color: #777;
+  padding: 20px;
+}
+button.clear {
+  background: #ff5c5c;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  float: right;
+}
+button.clear:hover {
+  background: #e14a4a;
+}
+
+/* Hide inactive sections */
+.section { display: none; }
+.section.active { display: block; }
+
+/* Responsive */
+@media (max-width:900px){
+  body {flex-direction: column;}
+  .sidebar {width:100%; flex-direction:row; justify-content:space-between; flex-wrap:wrap;}
+  .main-content {height:auto;}
+}
+</style>
+</head>
+<body>
+
+<!-- ✅ Sidebar Section -->
+<div class="sidebar" id="sidebar">
+  <h2>🛠️ Admin Panel</h2>
+  <div id="login-section">
+    <input type="text" id="adminUser" placeholder="Admin username">
+    <input type="password" id="adminPass" placeholder="Admin password">
+    <div class="login-error" id="login-error"></div>
+    <button onclick="checkLogin()">Login</button>
+  </div>
+
+  <div class="quick-buttons" id="quickButtons" style="display:none;">
+    <button onclick="showSection('cart-data', this)">🛒 Cart Data</button>
+    <button onclick="showSection('feedback-data', this)">💬 Feedback</button>
+    <button onclick="showSection('order-data', this)">📦 Orders</button>
+    <button class="logout" onclick="logout()">Logout</button>
+  </div>
+</div>
+
+<!-- ✅ Right Content -->
+<div class="main-content">
+  <header>📊 Dashboard Overview</header>
+  <div class="container">
+
+    <div class="card section" id="cart-data">
+      <h2>🛒 Current Cart Items 
+        <button class="clear" onclick="clearCartData()">Clear</button>
+      </h2>
+      <table id="cartTable">
+        <thead><tr><th>Image</th><th>Product</th><th>Price</th><th>Qty</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="card section" id="feedback-data">
+      <h2>💬 Customer Feedback 
+        <button class="clear" onclick="clearFeedback()">Clear</button>
+      </h2>
+      <table id="feedbackTable">
+        <thead><tr><th>Name</th><th>Email</th><th>Message</th><th>Date</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="card section" id="order-data">
+      <h2>📦 Orders Placed 
+        <button class="clear" onclick="clearOrders()">Clear</button>
+      </h2>
+      <table id="orderTable">
+        <thead><tr><th>Order ID</th><th>Date</th><th>Total</th><th>Payment</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ✅ Login System
+const ADMIN_USERNAME = "admin";
+const ADMIN_PASSWORD = "admin123";
+
+function checkLogin(){
+  const user = document.getElementById('adminUser').value.trim();
+  const pass = document.getElementById('adminPass').value.trim();
+  const error = document.getElementById('login-error');
+
+  if(user === ADMIN_USERNAME && pass === ADMIN_PASSWORD){
+    localStorage.setItem('admin_logged', 'true');
+    document.getElementById('login-section').style.display = 'none';
+    document.getElementById('quickButtons').style.display = 'block';
+    showSection('cart-data', document.querySelector('.quick-buttons button')); // default
+  } else {
+    error.textContent = "❌ Incorrect username or password!";
+  }
+}
+
+function logout(){
+  if(confirm('Are you sure you want to logout?')){
+    localStorage.removeItem('admin_logged');
+    document.getElementById('login-section').style.display = 'block';
+    document.getElementById('quickButtons').style.display = 'none';
+    hideAllSections();
+  }
+}
+
+// ✅ Show one section at a time
+function showSection(id, btn){
+  hideAllSections();
+  document.getElementById(id).classList.add('active');
+
+  // Highlight active button
+  document.querySelectorAll('.quick-buttons button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// Hide all right-side sections
+function hideAllSections(){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+}
+
+// ✅ Data Loading
+function loadCart() {
+  const cart = JSON.parse(localStorage.getItem('demo_cart_v1')) || [];
+  const tbody = document.querySelector('#cartTable tbody');
+  tbody.innerHTML = '';
+  if (cart.length === 0)
+    return (tbody.innerHTML = '<tr><td colspan="4" class="empty">No items in cart</td></tr>');
+  cart.forEach(i => {
+    tbody.innerHTML += `
+      <tr>
+        <td><img src="${i.img}" alt=""></td>
+        <td>${i.title}</td>
+        <td>$${i.price.toFixed(2)}</td>
+        <td>${i.qty}</td>
+      </tr>`;
+  });
+}
+
+function loadFeedback() {
+  const data = JSON.parse(localStorage.getItem('feedbacks')) || [];
+  const tbody = document.querySelector('#feedbackTable tbody');
+  tbody.innerHTML = '';
+  if (data.length === 0)
+    return (tbody.innerHTML = '<tr><td colspan="4" class="empty">No feedback received</td></tr>');
+  data.forEach(f => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${f.name}</td>
+        <td>${f.email}</td>
+        <td>${f.message}</td>
+        <td>${f.date}</td>
+      </tr>`;
+  });
+}
+
+function loadOrders() {
+  const orders = JSON.parse(localStorage.getItem('orders')) || [];
+  const tbody = document.querySelector('#orderTable tbody');
+  tbody.innerHTML = '';
+  if (orders.length === 0)
+    return (tbody.innerHTML = '<tr><td colspan="4" class="empty">No orders placed</td></tr>');
+  orders.forEach(o => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${o.id}</td>
+        <td>${new Date(o.date).toLocaleString()}</td>
+        <td>$${o.total.toFixed(2)}</td>
+        <td>${o.paymentMethod}</td>
+      </tr>`;
+  });
+}
+
+// ✅ Clear Local Data
+function clearCartData(){
+  if(confirm('Clear cart data?')) localStorage.removeItem('demo_cart_v1'), loadCart();
+}
+function clearFeedback(){
+  if(confirm('Clear feedback data?')) localStorage.removeItem('feedbacks'), loadFeedback();
+}
+function clearOrders(){
+  if(confirm('Clear orders data?')) localStorage.removeItem('orders'), loadOrders();
+}
+
+// ✅ Initialization
+window.addEventListener('load', ()=>{
+  const isLogged = localStorage.getItem('admin_logged');
+  if(isLogged === 'true'){
+    document.getElementById('login-section').style.display = 'none';
+    document.getElementById('quickButtons').style.display = 'block';
+    showSection('cart-data', document.querySelector('.quick-buttons button'));
+  }
+  loadCart();
+  loadFeedback();
+  loadOrders();
+});
+</script>
+
+</body>
+</html>
